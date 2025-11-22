@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Divider from './components/common/Divider';
 import HeroSection from './sections/HeroSection';
 import ServicesSection from './sections/ServicesSection';
@@ -14,7 +15,7 @@ import ParticleField from './components/visual/ParticleField';
 import ThunderCursor from './components/visual/ThunderCursor';
 import VideoBackground from './components/visual/VideoBackground';
 
-const App: React.FC = () => {
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const observer = new IntersectionObserver(
@@ -54,25 +55,84 @@ const App: React.FC = () => {
           <ParticleField />
           <FloatingShapes />
         </div>
-      <TopNav />
-      <main>
-        <HeroSection />
-        <ServicesSection />
-        <Divider />
-        <DifferentiatorsSection />
-        <Divider />
-        <TeamSection />
-        <Divider />
-        <TestimonialsSection />
-        <Divider />
-        <PricingSection />
-        <Divider />
-        <ContactSection />
-        <Divider />
-        <FooterSection />
-      </main>
+        <TopNav />
+        <main>
+          {children}
+        </main>
       </div>
     </div>
+  );
+};
+
+const HomePage: React.FC = () => (
+  <Layout>
+    <HeroSection />
+    <ServicesSection />
+    <Divider />
+    <DifferentiatorsSection />
+    <Divider />
+    <TeamSection />
+    <Divider />
+    <TestimonialsSection />
+    <Divider />
+    <PricingSection />
+    <Divider />
+    <ContactSection />
+    <Divider />
+    <FooterSection />
+  </Layout>
+);
+
+const ServicesPage: React.FC = () => (
+  <Layout>
+    <ServicesSection />
+    <Divider />
+    <FooterSection />
+  </Layout>
+);
+
+const WhyUsPage: React.FC = () => (
+  <Layout>
+    <DifferentiatorsSection />
+    <Divider />
+    <FooterSection />
+  </Layout>
+);
+
+const TeamPage: React.FC = () => (
+  <Layout>
+    <TeamSection />
+    <Divider />
+    <FooterSection />
+  </Layout>
+);
+
+const PricingPage: React.FC = () => (
+  <Layout>
+    <PricingSection />
+    <Divider />
+    <FooterSection />
+  </Layout>
+);
+
+const ContactPage: React.FC = () => (
+  <Layout>
+    <ContactSection />
+    <Divider />
+    <FooterSection />
+  </Layout>
+);
+
+const App: React.FC = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/services" element={<ServicesPage />} />
+      <Route path="/why-us" element={<WhyUsPage />} />
+      <Route path="/team" element={<TeamPage />} />
+      <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+    </Routes>
   );
 };
 

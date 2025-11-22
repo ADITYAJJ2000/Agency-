@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import CTAButton from '../common/CTAButton';
 
 const navLinks = [
-  { label: 'Services', href: '#services' },
-  { label: 'Why Us', href: '#why-us' },
-  { label: 'Team', href: '#team' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Services', href: '/services' },
+  { label: 'Why Us', href: '/why-us' },
+  { label: 'Team', href: '/team' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const TopNav: React.FC = () => {
@@ -25,15 +26,15 @@ const TopNav: React.FC = () => {
   return (
     <>
       <header className="nav">
-        <div className="nav__brand">
+        <Link to="/" className="nav__brand" style={{ textDecoration: 'none', color: 'inherit' }}>
           <span className="nav__logo">NOVA</span>
           <span className="nav__tagline">Full-Service Digital & Tech</span>
-        </div>
+        </Link>
         <nav className="nav__links">
           {navLinks.map((item) => (
-            <a key={item.label} href={item.href} onClick={closeMenu}>
+            <Link key={item.label} to={item.href} onClick={closeMenu}>
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="nav__cta">
@@ -55,9 +56,9 @@ const TopNav: React.FC = () => {
           <div className={`mobile-menu ${isMenuOpen ? 'mobile-menu--open' : ''}`}>
             <nav className="mobile-menu__nav">
               {navLinks.map((item) => (
-                <a key={item.label} href={item.href} onClick={closeMenu}>
+                <Link key={item.label} to={item.href} onClick={closeMenu}>
                   {item.label}
-                </a>
+                </Link>
               ))}
             </nav>
             <div className="mobile-menu__cta">
