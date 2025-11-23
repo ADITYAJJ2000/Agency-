@@ -12,7 +12,7 @@ type ShapeConfig = {
 
 const FloatingShapes: React.FC = () => {
   const shapesRef = useRef<ShapeConfig[]>([]);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Initialize shapes with random positions and properties

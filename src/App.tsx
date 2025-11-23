@@ -5,10 +5,10 @@ import HeroSection from './sections/HeroSection';
 import ServicesSection from './sections/ServicesSection';
 import DifferentiatorsSection from './sections/DifferentiatorsSection';
 import TeamSection from './sections/TeamSection';
-import TestimonialsSection from './sections/TestimonialsSection';
 import PricingSection from './sections/PricingSection';
 import ContactSection from './sections/ContactSection';
 import FooterSection from './sections/FooterSection';
+import CareersSection from './sections/CareersSection';
 import TopNav from './components/navigation/TopNav';
 import FloatingShapes from './components/visual/FloatingShapes';
 import ParticleField from './components/visual/ParticleField';
@@ -18,20 +18,48 @@ import VideoBackground from './components/visual/VideoBackground';
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    
+    // Make elements visible immediately if they're already in view
+    const makeVisible = () => {
+      document.querySelectorAll('[data-animate]').forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (isInView) {
+          el.classList.add('is-visible');
+        }
+      });
+    };
+    
+    // Initial check
+    makeVisible();
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-          } else {
-            entry.target.classList.remove('is-visible');
           }
         });
       },
-      { threshold: 0.2 },
+      { threshold: 0.1, rootMargin: '50px' },
     );
+    
+    // Observe all animate elements
     document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    
+    // Fallback: make visible after a short delay if observer didn't trigger
+    const fallbackTimeout = setTimeout(() => {
+      document.querySelectorAll('[data-animate]').forEach((el) => {
+        if (!el.classList.contains('is-visible')) {
+          el.classList.add('is-visible');
+        }
+      });
+    }, 500);
+    
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimeout);
+    };
   }, []);
 
   return (
@@ -72,8 +100,6 @@ const HomePage: React.FC = () => (
     <DifferentiatorsSection />
     <Divider />
     <TeamSection />
-    <Divider />
-    <TestimonialsSection />
     <Divider />
     <PricingSection />
     <Divider />
@@ -123,6 +149,14 @@ const ContactPage: React.FC = () => (
   </Layout>
 );
 
+const CareersPage: React.FC = () => (
+  <Layout>
+    <CareersSection />
+    <Divider />
+    <FooterSection />
+  </Layout>
+);
+
 const App: React.FC = () => {
   return (
     <Routes>
@@ -132,6 +166,7 @@ const App: React.FC = () => {
       <Route path="/team" element={<TeamPage />} />
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/contact" element={<ContactPage />} />
+      <Route path="/careers" element={<CareersPage />} />
     </Routes>
   );
 };
